@@ -12,13 +12,8 @@ const AddRecipe = ({ setRecipes }) => {
         utilities: [''],
         instructions: ['', '', ''],
     })
-    const [ingredients, setIngredients] = useState(["", "", "", ""]);
-    const [quantities, setQuantities] = useState(["", "", "", ""]);
-    const [utilities, setUtilities] = useState([""]);
-    const [instructions, setInstructions] = useState(["", ""]);
-    // refactor to 1 useState object
-    // setForm({...form, nameRecipe: e.target.value})
-    {/*switch toevoegen om url/screenshot te uploaden ipv informatie*/}
+    // switch toevoegen om url/screenshot te uploaden ipv informatie
+
     const handleFormChange = (e) => {
         setForm({
             ...form,
@@ -77,7 +72,7 @@ const AddRecipe = ({ setRecipes }) => {
                 onChange={handleFormChange}
             />
             <label>Ingredienten</label>
-            {ingredients.map((item, index) => (
+            {form.ingredients.map((item, index) => (
                 <>
                 <label htmlFor={`ingredients[${index}]`}></label>
                 <input
@@ -97,12 +92,12 @@ const AddRecipe = ({ setRecipes }) => {
                     onChange={handleFormChange}
                 />
                 </>
-            ))}
-                <button type="button" name="addIngredient" onClick={() => {setIngredients([...ingredients, ""]); setQuantities([...quantities, ""])}}>+</button>
-                {ingredients.length > 1 ? ( <button type="button" name="deleteIngredient" onClick={() => {setIngredients(ingredients.slice(0, -1)); setQuantities(quantities.slice(0, -1))}}>-</button> ) : (<></>)}
+            ))}                                                             
+                <button type="button" name="addIngredient" onClick={() => {setForm({...form, ingredients: [...form.ingredients, ""], quantities: [...form.quantities, ""]})}}>+</button>
+                {form.ingredients.length > 1 ? ( <button type="button" name="deleteIngredient" onClick={() => {setForm({...form, ingredients:form.ingredients.slice(0, -1), quantities: form.quantities.slice(0, -1)})}}>-</button> ) : (<></>)}
             
                 <label>Benodigdheden: </label>
-            {utilities.map((item, index) => (
+            {form.utilities.map((item, index) => (
                 <>
                 <label htmlFor={`utilities[${index}]`}></label>
                 <input
@@ -110,28 +105,28 @@ const AddRecipe = ({ setRecipes }) => {
                     name={`utilities[${index}]`}
                     type="text"
                     value={form.utilities[index]}
-                    onChange={(e) => setUtilities(utilities.map((utility, i) => i===index ? e.target.value : utility))}
+                    onChange={handleFormChange}
                 />
                 </>
             ))}
-                <button type="button" name="addUtility" onClick={() => {setUtilities([...utilities, ""])}}>+</button>
-                {utilities.length > 1 ? ( <button type="button" name="deleteUtility" onClick={() => {setUtilities(utilities.slice(0, -1))}}>-</button> ) : (<></>)}
+                <button type="button" name="addUtility" onClick={() => {setForm({...form, utilities: [...form.utilities, ""]})}}>+</button>
+                {form.utilities.length > 1 ? ( <button type="button" name="deleteUtility" onClick={() => {setForm({...form, utilities: form.utilities.slice(0, -1)})}}>-</button> ) : (<></>)}
             
                 <label>Instructies: </label>
-            {instructions.map((item, index) => (
+            {form.instructions.map((item, index) => (
                 <>
                 <label htmlFor={`instructions[${index}]`}></label>
                 <input
                     id={`instructions[${index}]`}
                     name={`instructions[${index}]`}
                     type="text"
-                    value={instructions[index]}
-                    onChange={(e) => setInstructions(instructions.map((instruction, i) => i===index ? e.target.value : instruction))}
+                    value={form.instructions[index]}
+                    onChange={handleFormChange}
                 />
                 </>
             ))}
-                <button type="button" name="addInstruction" onClick={() => {setInstructions([...instructions, ""])}}>+</button>
-                {instructions.length > 1 ? ( <button type="button" name="deleteInstruction" onClick={() => {setInstructions(instructions.slice(0, -1))}}>-</button> ) : (<></>)}
+                <button type="button" name="addInstruction" onClick={() => {setForm({...form, instructions: [...form.instructions, ""]})}}>+</button>
+                {form.instructions.length > 1 ? ( <button type="button" name="deleteInstruction" onClick={() => {setForm({...form, instructions: form.instructions.slice(0, -1)})}}>-</button> ) : (<></>)}
 
             <p>Uploadzone toevoegen voor foto's</p>
             <button type="submit">Recept toevoegen</button>
