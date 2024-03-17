@@ -1,16 +1,31 @@
 import { useState } from "react";
 
 const AddRecipe = ({ setRecipes }) => {
-    const [nameRecipe, setNameRecipe] = useState('');
-    const [submittedBy, setSubmittedBy] = useState('');
-    const [contextRecipe, setContextRecipe] = useState('');
-    const [persons, setPersons] = useState(0);
-    const [preparationTime, setPreparationTime] = useState(0);
+    const [form, setForm] = useState({
+        nameRecipe: '',
+        submittedBy: '',
+        contextRecipe: '',
+        persons: 0,
+        preparationTime: 0,
+        ingredients: ['', '', ''],
+        quantities: ['', '', ''],
+        utilities: [''],
+        instructions: ['', '', ''],
+    })
     const [ingredients, setIngredients] = useState(["", "", "", ""]);
     const [quantities, setQuantities] = useState(["", "", "", ""]);
     const [utilities, setUtilities] = useState([""]);
     const [instructions, setInstructions] = useState(["", ""]);
- 
+    // refactor to 1 useState object
+    // setForm({...form, nameRecipe: e.target.value})
+    {/*switch toevoegen om url/screenshot te uploaden ipv informatie*/}
+    const handleFormChange = (e) => {
+        setForm({
+            ...form,
+            [e.target.name]: e.target.value
+        })
+    }
+
   return (
     <main className="AddRecipe">
         <h1>Recept toevoegen aan Cuisine Escalée</h1>
@@ -18,61 +33,68 @@ const AddRecipe = ({ setRecipes }) => {
             <label htmlFor="nameRecipe">Naam van het Recept:</label>
             <input
                 id="nameRecipe"
+                name="nameRecipe"
                 type="text"
                 required
-                value={nameRecipe}
-                onChange={(e) => setNameRecipe(e.target.value)}
+                value={form.nameRecipe}
+                onChange={handleFormChange}
             />
             <label htmlFor="submittedBy">Jouw naam:</label>
             <input
                 id="submittedBy"
+                name="submittedBy"
                 type="text"
                 placeholder="Jefke Vanderlinden"
                 required
-                value={submittedBy}
-                onChange={(e) => setSubmittedBy(e.target.value)}
+                value={form.submittedBy}
+                onChange={handleFormChange}
             />
             <label htmlFor="contextRecipe">Context:</label>
             <input
                 id="contextRecipe"
+                name="contextRecipe"
                 type="text"
                 placeholder="Mijn lievelingsgerecht"
-                value={contextRecipe}
-                onChange={(e) => setContextRecipe(e.target.value)}
+                value={form.contextRecipe}
+                onChange={handleFormChange}
             />
-            {/*switch toevoegen om url/screenshot te uploaden ipv informatie*/}
+
             <label htmlFor="persons">Aantal personen:</label>
             <input 
                 //to do: validate input data
                 id="persons"
+                name="persons"
                 type="number"
-                value={persons}
-                onChange={(e) => setPersons(e.target.value)}
+                value={form.persons}
+                onChange={handleFormChange}
             />
             <label htmlFor="preparationTime">Bereidingstijd:</label>
             <input 
                 id="preparationTime"
+                name="preparationTime"
                 type="time"
-                value={preparationTime}
-                onChange={(e) => setPreparationTime(e.target.value)}
+                value={form.preparationTime}
+                onChange={handleFormChange}
             />
             <label>Ingredienten</label>
             {ingredients.map((item, index) => (
                 <>
-                <label htmlFor={`ingredient${index}`}></label>
+                <label htmlFor={`ingredients[${index}]`}></label>
                 <input
-                    id={`ingredient${index}`}
+                    id={`ingredients[${index}]`}
+                    name={`ingredients[${index}]`}
                     type="text"
-                    value={ingredients[index]}
-                    onChange={(e) => setIngredients(ingredients.map((ingredient, i) => i===index ? e.target.value : ingredient))}
+                    value={form.ingredients[index]}
+                    onChange={handleFormChange}
                 />
                 
-                <label htmlFor={`quantity${index}`}></label>
+                <label htmlFor={`quantities[${index}]`}></label>
                 <input
-                    id={`quantity${index}`}
+                    id={`quantities[${index}]`}
+                    name={`quantities[${index}]`}
                     type="text"
-                    value={quantities[index]}
-                    onChange={(e) => setQuantities(quantities.map((quanity, i) => i===index ? e.target.value : quanity))}
+                    value={form.quantities[index]}
+                    onChange={handleFormChange}
                 />
                 </>
             ))}
@@ -82,11 +104,12 @@ const AddRecipe = ({ setRecipes }) => {
                 <label>Benodigdheden: </label>
             {utilities.map((item, index) => (
                 <>
-                <label htmlFor={`utility${index}`}></label>
+                <label htmlFor={`utilities[${index}]`}></label>
                 <input
-                    id={`utility${index}`}
+                    id={`utilities[${index}]`}
+                    name={`utilities[${index}]`}
                     type="text"
-                    value={utilities[index]}
+                    value={form.utilities[index]}
                     onChange={(e) => setUtilities(utilities.map((utility, i) => i===index ? e.target.value : utility))}
                 />
                 </>
@@ -97,9 +120,10 @@ const AddRecipe = ({ setRecipes }) => {
                 <label>Instructies: </label>
             {instructions.map((item, index) => (
                 <>
-                <label htmlFor={`instruction${index}`}></label>
+                <label htmlFor={`instructions[${index}]`}></label>
                 <input
-                    id={`instruction${index}`}
+                    id={`instructions[${index}]`}
+                    name={`instructions[${index}]`}
                     type="text"
                     value={instructions[index]}
                     onChange={(e) => setInstructions(instructions.map((instruction, i) => i===index ? e.target.value : instruction))}
@@ -112,7 +136,7 @@ const AddRecipe = ({ setRecipes }) => {
             <p>Uploadzone toevoegen voor foto's</p>
             <button type="submit">Recept toevoegen</button>
         </form>
-        <p>{ingredients}</p>
+        <p>{form.nameRecipe}</p>
     </main>
   )
 }
